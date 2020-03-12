@@ -173,20 +173,15 @@ void ofApp::updateLefthand() {
 	if (live.isLoaded()) {
 		ofxAbletonLiveTrack *track = live.getTrack("Left Hand");
 		ofxAbletonLiveDevice *device = track->getDevice("Serum_x64");
-		ofxAbletonLiveParameter *wavePos = device->getParameter("Macro 1");
-		/*ofxAbletonLiveDevice *device = track->getDevice("Filter Driver");
-		ofxAbletonLiveParameter *freq = device->getParameter("Filter Freq");
-		ofxAbletonLiveParameter *lfo = device->getParameter("LFO Amount");*/
-		ofxAbletonLiveDevice *noteDial = track->getDevice("Max NoteDial");
-		ofxAbletonLiveParameter *noteControl = noteDial->getParameter("note control");
+		ofxAbletonLiveParameter *bWarp = device->getParameter("B Warp");
+		ofxAbletonLiveParameter *hyper = device->getParameter("Macro 4");
 
 		float avg = averageSpeed(LH_speedDifferences);
 		ofLog() << "LH average speed: " << avg;
 
-		wavePos->setValue(calculate128Value(z));
-		//noteControl->setValue(calculateValue(y));
-		//lfo->setValue(calculate128Value(z));
-
+		bWarp->setValue(calculate1Value(z));
+		hyper->setValue(calculate1Value(y));
+		
 		track->setVolume(clip(avg));
 		live.playContinue();
 	}
@@ -207,12 +202,14 @@ void ofApp::updateRighthand() {
 		ofxAbletonLiveTrack *track = live.getTrack("Right Hand");
 		ofxAbletonLiveDevice *device = track->getDevice("Bottle Blower");
 		ofxAbletonLiveParameter *fm = device->getParameter("FM Amount");
+		ofxAbletonLiveParameter *wavePos = device->getParameter("Wave Position");
 
 		float avg = averageSpeed(RH_speedDifferences);
 		ofLog() << "RH average speed: " << avg;
 
-		fm->setValue(calculate128Value(paramvalue));
-		//track->setVolume(calculate1Value(avg));
+		fm->setValue(calculate128Value(y));
+		wavePos->setValue(calculate128Value(z));
+
 		track->setVolume(clip(avg));
 		live.playContinue();
 	}
